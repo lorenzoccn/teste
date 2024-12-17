@@ -9,8 +9,8 @@ const CARD_SPACING = 10;
 
 let startTime = 0; 
 let elapsedTime = 0; 
-let cooldown = false;  // Variável de controle de cooldown
-let currentScreen = 'menu';  // Estado inicial da tela
+let cooldown = false; 
+let currentScreen = 'menu';  
 let cards = [];
 let speciesCards = [];
 let revealedCards = [];
@@ -32,6 +32,8 @@ function init() {
     loadTextures();
     resetGame();
     requestAnimationFrame(gameLoop);
+    adjustCanvasSize();
+    window.addEventListener("resize", adjustCanvasSize);
 }
 
 function loadTextures() {
@@ -103,11 +105,12 @@ function drawMenu() {
 }
 
 function drawCredits() {
+
+    adjustCanvasSize();
     ctx.fillStyle = 'white';
     ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100); // Fundo branco
 
     ctx.fillStyle = 'black';
-    ctx.font = '18px Arial'; // Reduzir o tamanho da fonte para 18px
     ctx.textAlign = 'center'; // Alinhar o texto ao centro
 
     // Texto centralizado
@@ -235,9 +238,6 @@ canvas.addEventListener('click', function (event) {
     const x = event.offsetX;
     const y = event.offsetY;
 
-    adjustCanvasSize();
-    window.addEventListener("resize", adjustCanvasSize);
-
     if (currentScreen === 'menu') {
         if (x >= 300 && x <= 500) {
             if (y >= 200 && y <= 250) {
@@ -294,9 +294,11 @@ function adjustCanvasSize() {
      const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
 
      if (isMobile) {
+        ctx.font = '10px Arial';
      	canvas.width = window.innerWidth * 0.8;
-        canvas.height = window.innerHeight * 1.3;
+        canvas.height = window.innerHeight * 1;
      } else {
+        ctx.font = '18px Arial';
         canvas.width = 800; // Tamanho padrão para desktop
         canvas.height = 600;
      }

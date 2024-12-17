@@ -294,8 +294,8 @@ function adjustCanvasSize() {
      const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
 
      if (isMobile) {
-     	canvas.width = window.innerWidth * 0.7; // 90% da largura da tela
-        canvas.height = window.innerHeight * 1.3; // 90% da altura da tela
+     	canvas.width = window.innerWidth * 0.8;
+        canvas.height = window.innerHeight * 1.3;
      } else {
         canvas.width = 800; // Tamanho padrão para desktop
         canvas.height = 600;

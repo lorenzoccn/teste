@@ -235,6 +235,9 @@ canvas.addEventListener('click', function (event) {
     const x = event.offsetX;
     const y = event.offsetY;
 
+    adjustCanvasSize();
+    window.addEventListener("resize", adjustCanvasSize);
+
     if (currentScreen === 'menu') {
         if (x >= 300 && x <= 500) {
             if (y >= 200 && y <= 250) {
@@ -287,5 +290,16 @@ function startGame() {
     currentScreen = 'game';
 }
 
+function adjustCanvasSize() {
+     const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
+
+     if (isMobile) {
+     	canvas.width = window.innerWidth * 0.9; // 90% da largura da tela
+        canvas.height = window.innerHeight * 0.9; // 90% da altura da tela
+     } else {
+        canvas.width = 800; // Tamanho padrão para desktop
+        canvas.height = 600;
+     }
+}
 
 init();

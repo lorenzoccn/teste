@@ -106,7 +106,6 @@ function drawMenu() {
 
 function drawCredits() {
 
-    adjustCanvasSize();
     ctx.fillStyle = 'white';
     ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100); // Fundo branco
 
@@ -290,18 +289,41 @@ function startGame() {
     currentScreen = 'game';
 }
 
-function adjustCanvasSize() {
-     const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
+function getDeviceResolution() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const pixelRatio = window.devicePixelRatio || 1;
 
-     if (isMobile) {
-        ctx.font = '10px Arial';
-     	canvas.width = window.innerWidth * 0.8;
-        canvas.height = window.innerHeight * 1;
-     } else {
-        ctx.font = '18px Arial';
-        canvas.width = 800; // Tamanho padrão para desktop
+    console.log(`Resolução da tela: ${width}x${height}`);
+    console.log(`Densidade de pixels: ${pixelRatio}`);
+
+    return {
+        width,
+        height,
+        pixelRatio
+    };
+}
+
+function adjustCanvasSize() {
+    const { width, height, pixelRatio } = getDeviceResolution();
+
+    // Ajuste baseado na densidade de pixels e largura do dispositivo
+    if (width <= 800 || pixelRatio > 1) { // Condição para dispositivos móveis
+        canvas.width = width * 0.9;  // 90% da largura da tela
+        canvas.height = height * 0.9; // 90% da altura da tela
+    } else { // Ajuste para desktops
+        canvas.width = 800;
         canvas.height = 600;
-     }
+    }
+
+    console.log(`Canvas ajustado: ${canvas.width}x${canvas.height}`);
+    adjustGrid(); // Recalcular o grid das cartas
+}
+
+function adjustGrid() {
+    // Atualiza as dimensões das cartas com base no tamanho do canvas
+    CARD_WIDTH = Math.min(canvas.width / GRID_COLS - CARD_SPACING, 100);
+    CARD_HEIGHT = CARD_WIDTH; // Mantém as cartas quadradas
 }
 
 init();
